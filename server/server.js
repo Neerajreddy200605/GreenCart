@@ -13,21 +13,23 @@ import orderRouter from "./routes/orderRoute.js";
 import { stripeWebHooks } from "./controllers/orderController.js";
 
 const app = express();
-const port = process.env.PORT || 4000;
 
+// Connect to DBs and services
 await connectDB();
 await connectCloudinary();
 
-//Allow Multiple Origins
+// Allow Multiple Origins
 const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
 
+// Stripe webhook route (must come before body parser)
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebHooks);
 
-//Middleware configuration
+// Middleware configuration
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
+// Routes
 app.get("/", (req, res) => res.send("API is Working"));
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
@@ -36,6 +38,4 @@ app.use("/api/cart", cartRouter);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 
-app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-});
+export default app;
