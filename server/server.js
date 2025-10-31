@@ -19,7 +19,10 @@ await connectDB();
 await connectCloudinary();
 
 //Allow Multiple Origins
-const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://greencart-iota-five.vercel.app",
+];
 
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebHooks);
 
